@@ -38,20 +38,22 @@ import com.varunkumar.audioactivityresult.utils.extractTime
 
 @Composable
 fun SearchScreen(
-    viewModel: ApiViewModel = hiltViewModel()
+    modifier: Modifier,
+    viewModel: ApiViewModel
 ) {
     val query by viewModel.search
     val context = LocalContext.current
     val isLoading by viewModel.isLoading
     val result by viewModel.result
-    val modifier = Modifier.fillMaxWidth()
+    val new_modifier = Modifier.fillMaxWidth()
 
     Column(
         modifier = modifier
+            .fillMaxWidth()
             .padding(vertical = 10.dp, horizontal = 20.dp)
     ) {
         OutlinedTextField(
-            modifier = modifier,
+            modifier = new_modifier,
             value = query,
             onValueChange = viewModel::onTextchange,
             label = { Text(text = "Enter artist") },
@@ -66,7 +68,7 @@ fun SearchScreen(
 
         if (isLoading) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = new_modifier,
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
@@ -133,4 +135,8 @@ fun MusicItem(
 @Composable
 fun Pre() {
 //    SearchScreen()
+
+//    MusicItem(data = Data()) {
+//
+//    }
 }

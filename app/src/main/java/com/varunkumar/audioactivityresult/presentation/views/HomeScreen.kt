@@ -39,7 +39,8 @@ import com.varunkumar.audioactivityresult.utils.extractTime
 
 @Composable
 fun HomeScreen(
-    viewModel: MainViewModel = hiltViewModel()
+    modifier: Modifier,
+    viewModel: MainViewModel
 ) {
     val audioItems by viewModel.audioItems.collectAsState()
 
@@ -67,7 +68,7 @@ fun HomeScreen(
 
     Column {
         AndroidView(
-            modifier = Modifier
+            modifier = modifier
                 .aspectRatio(16 / 9f)
                 .fillMaxWidth(),
             update = {
