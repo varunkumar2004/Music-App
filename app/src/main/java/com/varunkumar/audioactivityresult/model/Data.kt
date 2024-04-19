@@ -1,4 +1,4 @@
-package com.varunkumar.audioactivityresult.data.model
+package com.varunkumar.audioactivityresult.model
 
 data class Data(
     val album: Album,

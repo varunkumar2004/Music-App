@@ -30,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.media3.ui.PlayerView
@@ -66,9 +65,11 @@ fun HomeScreen(
         }
     }
 
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         AndroidView(
-            modifier = modifier
+            modifier = Modifier
                 .aspectRatio(16 / 9f)
                 .fillMaxWidth(),
             update = {

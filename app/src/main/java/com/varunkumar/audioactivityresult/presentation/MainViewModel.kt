@@ -1,23 +1,23 @@
 package com.varunkumar.audioactivityresult.presentation
 
 import android.net.Uri
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
-import com.varunkumar.audioactivityresult.MetaDataReader
-import com.varunkumar.audioactivityresult.data.model.AudioItem
+import com.varunkumar.audioactivityresult.domain.MetaDataReader
+import com.varunkumar.audioactivityresult.model.AudioItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
+import javax.inject.Named
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    val player: Player,
+    @Named("mainViewModelPlayer") val player: Player,
     private val metaDataReader: MetaDataReader,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {

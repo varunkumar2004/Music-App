@@ -3,8 +3,8 @@ package com.varunkumar.audioactivityresult.di
 import android.app.Application
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
-import com.varunkumar.audioactivityresult.MetaDataReader
-import com.varunkumar.audioactivityresult.MetaDataReaderImpl
+import com.varunkumar.audioactivityresult.domain.MetaDataReader
+import com.varunkumar.audioactivityresult.domain.MetaDataReaderImpl
 import com.varunkumar.audioactivityresult.domain.ApiService
 import dagger.Module
 import dagger.Provides
@@ -13,6 +13,7 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -23,6 +24,7 @@ object AppModule {
     @Provides
     // make this scoped for whole application
     @ViewModelScoped
+    @Named("mainViewModelPlayer")
     fun provideAudioPlayer(app: Application): Player {
         return ExoPlayer.Builder(app).build()
     }
@@ -42,5 +44,12 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @Named("appPlayer")
+    fun providePlayer(app: Application): Player {
+        return ExoPlayer.Builder(app).build()
     }
 }

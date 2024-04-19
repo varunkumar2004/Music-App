@@ -3,7 +3,7 @@ package com.varunkumar.audioactivityresult.presentation
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.varunkumar.audioactivityresult.data.model.ApiData
+import com.varunkumar.audioactivityresult.model.ApiData
 import com.varunkumar.audioactivityresult.domain.ApiService
 import com.varunkumar.audioactivityresult.utils.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,12 +19,14 @@ class ApiViewModel @Inject constructor(
 ) : ViewModel() {
     private val _search = mutableStateOf(savedStateHandle.get<String>("search") ?: "")
     val search get() = _search
+
     private val _isLoading = mutableStateOf(false)
     val isLoading get() = _isLoading
+
     private val _result = mutableStateOf<Result<ApiData?>>(Result.Success(null))
     val result get() = _result
 
-    fun onTextchange(text: String) {
+    fun onTextChange(text: String) {
         _search.value = text
     }
 

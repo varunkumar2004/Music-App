@@ -9,6 +9,11 @@ fun extractTime(duration: Long): String {
     val hours = duration / 3600
     val minutes = (duration % 3600) / 60
     val remainingSeconds = duration % 60
-    return String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds)
-}
+    val result = String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds)
 
+    return if (result.substring(0, 2) == "00") {
+        result.substring(3)
+    } else {
+        result
+    }
+}

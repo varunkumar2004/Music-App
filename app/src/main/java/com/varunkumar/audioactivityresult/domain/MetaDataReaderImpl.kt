@@ -1,19 +1,9 @@
-package com.varunkumar.audioactivityresult
+package com.varunkumar.audioactivityresult.domain
 
 import android.app.Application
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.core.database.getStringOrNull
-
-data class MetaData(
-    val title: String,
-    val artist: String,
-    val duration: Long
-)
-
-interface MetaDataReader {
-    fun getMetaDataFromUri(contentUri: Uri): MetaData?
-}
 
 class MetaDataReaderImpl(
     private val app: Application

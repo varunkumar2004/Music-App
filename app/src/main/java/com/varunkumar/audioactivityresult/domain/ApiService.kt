@@ -1,6 +1,6 @@
 package com.varunkumar.audioactivityresult.domain
 
-import com.varunkumar.audioactivityresult.data.model.ApiData
+import com.varunkumar.audioactivityresult.model.ApiData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
