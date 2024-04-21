@@ -1,12 +1,12 @@
 package com.varunkumar.audioactivityresult.domain
 
-import android.app.Application
+import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.core.database.getStringOrNull
 
 class MetaDataReaderImpl(
-    private val app: Application
+    private val app: Context
 ) : MetaDataReader {
     override fun getMetaDataFromUri(contentUri: Uri): MetaData? {
         if (contentUri.scheme != "content") return null
@@ -20,7 +20,7 @@ class MetaDataReaderImpl(
         var file: MetaData? = null
 
         app.contentResolver.query(
-            contentUri,
+            MediaStore.Audio.Media.INTERNAL_CONTENT_URI,
             projection,
             null,
             null,

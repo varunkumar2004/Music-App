@@ -73,16 +73,28 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended-android:1.6.5")
     implementation("io.coil-kt:coil-compose:2.6.0")
 
-    implementation("com.google.dagger:hilt-android:2.49")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    kapt("com.google.dagger:hilt-android-compiler:2.49")
-
     implementation("androidx.media3:media3-ui:1.3.0")
 
     // retrofit
     val retrofit_version = "2.11.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
     implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")
+
+    // dagger hilt
+    val dagger_version = "2.49"
+    implementation("com.google.dagger:hilt-android:$dagger_version")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    kapt("com.google.dagger:hilt-android-compiler:$dagger_version")
+    implementation("com.google.dagger:dagger:$dagger_version")
+    kapt("com.google.dagger:dagger-compiler:$dagger_version")
+    implementation("com.google.dagger:dagger-android:$dagger_version")
+    kapt("com.google.dagger:dagger-android-processor:$dagger_version")
+    implementation("com.google.dagger:dagger-android-support:$dagger_version")
+    kapt("com.google.dagger:dagger-android-support:2.49")
+
+    // compose navigation
+    val nav_version = "2.7.7"
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 }
 
 kapt {

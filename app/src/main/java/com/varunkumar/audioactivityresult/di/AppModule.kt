@@ -1,16 +1,18 @@
 package com.varunkumar.audioactivityresult.di
 
-import android.app.Application
+import android.content.Context
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import com.varunkumar.audioactivityresult.domain.ApiService
 import com.varunkumar.audioactivityresult.domain.MetaDataReader
 import com.varunkumar.audioactivityresult.domain.MetaDataReaderImpl
-import com.varunkumar.audioactivityresult.domain.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
@@ -22,16 +24,15 @@ object AppModule {
     private const val BASE_URL = "https://deezerdevs-deezer.p.rapidapi.com/"
 
     @Provides
-    // make this scoped for whole application
     @ViewModelScoped
-    @Named("mainViewModelPlayer")
-    fun provideAudioPlayer(app: Application): Player {
+    @Named("mainViewModel")
+    fun provideMainPlayer(@ApplicationContext app: Context): Player {
         return ExoPlayer.Builder(app).build()
     }
 
     @Provides
     @ViewModelScoped
-    fun provideMetaDataReader(app: Application): MetaDataReader {
+    fun provideMetaDataReader(@ApplicationContext app: Context): MetaDataReader {
         return MetaDataReaderImpl(app)
     }
 
@@ -46,10 +47,11 @@ object AppModule {
             .create(ApiService::class.java)
     }
 
+
     @Provides
-    @Singleton
-    @Named("appPlayer")
-    fun providePlayer(app: Application): Player {
+    @ViewModelScoped
+    @Named("apiViewModel")
+    fun provideApiPlayer(@ApplicationContext app: Context): Player {
         return ExoPlayer.Builder(app).build()
     }
 }

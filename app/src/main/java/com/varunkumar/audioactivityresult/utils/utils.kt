@@ -1,5 +1,9 @@
 package com.varunkumar.audioactivityresult.utils
 
+import androidx.media3.common.MediaItem
+import com.varunkumar.audioactivityresult.model.ApiData
+import com.varunkumar.audioactivityresult.model.AudioItem
+
 sealed class Result<T>(val data: T? = null, val msg: String? = null) {
     class Success<T>(data: T?) : Result<T>(data = data)
     class Error<T>(msg: String?) : Result<T>(msg = msg)
@@ -16,4 +20,24 @@ fun extractTime(duration: Long): String {
     } else {
         result
     }
+}
+
+fun convertToAudioItem(apiData: ApiData): List<AudioItem> {
+    val items = mutableListOf<AudioItem>()
+
+    apiData.data.map { data ->
+        items.add(
+            AudioItem(
+                isLocal = false,
+                contentUri = data.preview,
+                mediaItem = MediaItem.fromUri(data.preview),
+                name = data.title,
+                artist = data.artist.name,
+                duration = data.duration.toLong(),
+                cover = data.album.cover
+            )
+        )
+    }
+
+    return items
 }

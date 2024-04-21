@@ -16,38 +16,26 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    @Named("mainViewModelPlayer") val player: Player,
+class LocalViewModel @Inject constructor(
+    @Named("mainViewModel") val player: Player,
     private val metaDataReader: MetaDataReader,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val audioUris = savedStateHandle.getStateFlow("audioUris", emptyList<Uri>())
 
-//    val visiblePermissionDialog = mutableStateListOf<String>()
-//
-//    fun dismissDialog() {
-//        visiblePermissionDialog.removeLast()
-//    }
-//
-//    fun onPermissionResult(
-//        permission: String,
-//        granted: Boolean
-//    ) {
-//        if (!granted) {
-//            visiblePermissionDialog.add(0, permission)
-//        }
-//    }
-
     val audioItems = audioUris.map { uris ->
         uris.map { uri ->
             val metadata = metaDataReader.getMetaDataFromUri(uri)
+            val strUri = uri.toString()
 
             AudioItem(
-                contentUri = uri,
+                isLocal = true,
+                contentUri = strUri,
                 mediaItem = MediaItem.fromUri(uri),
                 name = metadata?.title ?: uri.lastPathSegment ?: "<Unknown>",
                 artist = metadata?.artist ?: "<Unknown>",
-                duration = metadata?.duration ?: 0L
+                duration = metadata?.duration ?: 0L,
+                cover = null
             )
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
@@ -61,9 +49,11 @@ class MainViewModel @Inject constructor(
         player.addMediaItem(MediaItem.fromUri(uri))
     }
 
-    fun playAudio(uri: Uri) {
+    fun playAudio(uri: String) {
         player.setMediaItem(
-            audioItems.value.find { it.contentUri == uri }?.mediaItem ?: return
+            audioItems.value.find {
+                it.contentUri == uri
+            }?.mediaItem ?: return
         )
     }
 
