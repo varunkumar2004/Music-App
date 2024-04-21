@@ -14,4 +14,3 @@ interface ApiService {
     @GET("search")
     fun getAudio(@Query("q") q: String): Call<ApiData>
 }
-
