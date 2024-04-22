@@ -24,7 +24,7 @@ class ApiViewModel @Inject constructor(
     @Named("apiViewModel") private val player: Player,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _searchText = mutableStateOf(savedStateHandle.get<String>("search") ?: "")
+    private val _searchText = mutableStateOf(savedStateHandle.get<String>("search") ?: "Pusha t")
     val searchText get() = _searchText
 
     private val _isLoading = MutableStateFlow(false)

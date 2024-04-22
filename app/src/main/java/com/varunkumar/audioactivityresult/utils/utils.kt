@@ -32,9 +32,10 @@ fun convertToAudioItem(apiData: ApiData): List<AudioItem> {
                 contentUri = data.preview,
                 mediaItem = MediaItem.fromUri(data.preview),
                 name = data.title,
-                artist = data.artist.name,
                 duration = data.duration.toLong(),
-                cover = data.album.cover
+                cover = data.album.cover,
+                artist = data.artist,
+                album = data.album
             )
         )
     }

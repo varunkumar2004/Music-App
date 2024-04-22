@@ -3,6 +3,7 @@ package com.varunkumar.audioactivityresult.utils
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilePresent
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class NavigationBarItems(
@@ -23,5 +24,11 @@ sealed class NavigationBarItems(
         route = "local_screen",
         label = "Local",
         icon = Icons.Default.FilePresent
+    )
+
+    data object Info : NavigationBarItems(
+        route = "info_screen",
+        label = "Info",
+        icon = Icons.Default.Info
     )
 }

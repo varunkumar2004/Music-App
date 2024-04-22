@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -25,7 +24,9 @@ import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Replay10
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
@@ -56,6 +57,7 @@ import com.varunkumar.audioactivityresult.utils.NavigationBarItems
 import com.varunkumar.audioactivityresult.utils.Result
 import com.varunkumar.audioactivityresult.utils.extractTime
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier,
@@ -71,6 +73,10 @@ fun HomeScreen(
 
     val isPlaying by viewModel.isPlaying
 
+    var showAlert by remember {
+        mutableStateOf(false)
+    }
+
     var selectedIcon by remember {
         mutableStateOf(NavigationBarItems.Home.label)
     }
@@ -85,7 +91,10 @@ fun HomeScreen(
                     currPlayer = it,
                     onPlayPauseClick = { if (!isPlaying) viewModel.playAudio(it) else viewModel.pauseAudio() },
                     seekBackMillis = { viewModel.rewindAudioMillis() },
-                    seekForwardMillis = { viewModel.forwardAudioMillis() }
+                    seekForwardMillis = { viewModel.forwardAudioMillis() },
+                    onInfoClick = {
+                        showAlert = true
+                    }
                 )
             }
         },
@@ -168,27 +177,18 @@ fun HomeScreen(
         }
     }
 
-}
-
-@Composable
-fun SearchCategory(
-    modifier: Modifier,
-    onCategoryClick: (String) -> Unit
-) {
-    val categories = listOf(
-        "All",
-        "Artist",
-        "Album",
-    )
-
-    val categoryClick = remember {
-        mutableStateOf(categories[0])
-    }
-
-    LazyRow {
-
+    if (showAlert) {
+        AlertDialog(onDismissRequest = { showAlert = false }) {
+            currPlayer?.let { item ->
+                InfoScreen(
+                    modifier = Modifier.fillMaxWidth(),
+                    item = item
+                )
+            }
+        }
     }
 }
+
 
 @Composable
 fun MusicItemsColumn(
@@ -245,7 +245,7 @@ fun Item(
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = item.artist,
+                        text = item.artist?.name ?: "Unknown",
                         color = Color.DarkGray,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -263,6 +263,7 @@ fun Item(
 fun TopBar(
     isPlaying: Boolean,
     currPlayer: AudioItem,
+    onInfoClick: () -> Unit,
     onPlayPauseClick: () -> Unit,
     seekBackMillis: () -> Unit,
     seekForwardMillis: () -> Unit,
@@ -280,7 +281,9 @@ fun TopBar(
         // display cover if present
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.weight(0.5f)
+            modifier = Modifier
+                .weight(0.5f)
+                .clickable { onInfoClick() }
         ) {
             AsyncImage(
                 model = currPlayer.cover,
@@ -301,7 +304,7 @@ fun TopBar(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = currPlayer.artist,
+                    text = currPlayer.artist?.name ?: "Unknown",
                     maxLines = 1,
                     color = Color.LightGray,
                     overflow = TextOverflow.Ellipsis

@@ -8,7 +8,8 @@ data class AudioItem (
     val contentUri: String,
     val mediaItem: MediaItem,
     val name: String,
-    val artist: String,
     val duration: Long,
-    val cover: String?
+    val cover: String?,
+    val album: Album? = null,
+    val artist: Artist? = null
 )

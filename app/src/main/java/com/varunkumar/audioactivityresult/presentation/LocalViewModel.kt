@@ -33,7 +33,6 @@ class LocalViewModel @Inject constructor(
                 contentUri = strUri,
                 mediaItem = MediaItem.fromUri(uri),
                 name = metadata?.title ?: uri.lastPathSegment ?: "<Unknown>",
-                artist = metadata?.artist ?: "<Unknown>",
                 duration = metadata?.duration ?: 0L,
                 cover = null
             )

@@ -105,13 +105,9 @@ fun LocalScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Column {
-                        Text(text = item.name)
-                        Text(text = item.artist)
+                    Item(modifier = Modifier.fillMaxWidth(), item = item) {
+                        // TODO now selected track
                     }
-
-                    val time = extractTime(item.duration)
-                    Text(text = time)
                 }
             }
         }
