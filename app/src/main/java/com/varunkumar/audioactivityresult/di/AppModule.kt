@@ -47,7 +47,6 @@ object AppModule {
             .create(ApiService::class.java)
     }
 
-
     @Provides
     @ViewModelScoped
     @Named("apiViewModel")

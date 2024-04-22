@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -45,6 +46,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -169,6 +171,26 @@ fun HomeScreen(
 }
 
 @Composable
+fun SearchCategory(
+    modifier: Modifier,
+    onCategoryClick: (String) -> Unit
+) {
+    val categories = listOf(
+        "All",
+        "Artist",
+        "Album",
+    )
+
+    val categoryClick = remember {
+        mutableStateOf(categories[0])
+    }
+
+    LazyRow {
+
+    }
+}
+
+@Composable
 fun MusicItemsColumn(
     modifier: Modifier,
     items: List<AudioItem>,
@@ -202,9 +224,33 @@ fun Item(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column {
-                Text(text = item.name)
-                Text(text = item.artist, color = Color.DarkGray)
+            Row(
+                modifier = Modifier.weight(0.7f),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                AsyncImage(
+                    model = item.cover,
+                    contentDescription = "cover",
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(5.dp))
+                )
+
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Column {
+                    Text(
+                        text = item.name,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        text = item.artist,
+                        color = Color.DarkGray,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
 
             val time = extractTime(item.duration)
@@ -233,7 +279,8 @@ fun TopBar(
     ) {
         // display cover if present
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.weight(0.5f)
         ) {
             AsyncImage(
                 model = currPlayer.cover,
@@ -246,8 +293,19 @@ fun TopBar(
             Spacer(modifier = Modifier.width(10.dp))
 
             Column {
-                Text(text = currPlayer.name, fontWeight = FontWeight.Bold, color = Color.White)
-                Text(text = currPlayer.artist, color = Color.LightGray)
+                Text(
+                    text = currPlayer.name,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = currPlayer.artist,
+                    maxLines = 1,
+                    color = Color.LightGray,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         }
 
@@ -271,7 +329,11 @@ fun MusicPlayerView(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(onClick = { seekBackMillis() }) {
-            Icon(imageVector = Icons.Default.Replay10, contentDescription = null, tint = Color.White)
+            Icon(
+                imageVector = Icons.Default.Replay10,
+                contentDescription = null,
+                tint = Color.White
+            )
         }
 
         IconButton(onClick = { onPlayPauseClick() }) {
@@ -284,7 +346,11 @@ fun MusicPlayerView(
         }
 
         IconButton(onClick = { seekForwardMillis() }) {
-            Icon(imageVector = Icons.Default.Forward10, contentDescription = null, tint = Color.White)
+            Icon(
+                imageVector = Icons.Default.Forward10,
+                contentDescription = null,
+                tint = Color.White
+            )
         }
     }
 }

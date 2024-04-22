@@ -21,7 +21,7 @@ sealed class NavigationBarItems(
 
     data object Local : NavigationBarItems(
         route = "local_screen",
-        label = "Search",
+        label = "Local",
         icon = Icons.Default.FilePresent
     )
 }

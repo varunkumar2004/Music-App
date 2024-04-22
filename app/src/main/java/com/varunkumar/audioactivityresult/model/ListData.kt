@@ -1,6 +1,6 @@
 package com.varunkumar.audioactivityresult.model
 
-data class Data(
+data class ListData(
     val album: Album,
     val artist: Artist,
     val duration: Int,
