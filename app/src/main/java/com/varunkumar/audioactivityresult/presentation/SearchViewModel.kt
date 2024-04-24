@@ -1,6 +1,5 @@
 package com.varunkumar.audioactivityresult.presentation
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -19,7 +18,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @HiltViewModel
-class ApiViewModel @Inject constructor(
+class SearchViewModel @Inject constructor(
     private val apiService: ApiService,
     @Named("apiViewModel") private val player: Player,
     private val savedStateHandle: SavedStateHandle
@@ -36,7 +35,7 @@ class ApiViewModel @Inject constructor(
     private val _currPlayer = mutableStateOf<AudioItem?>(null)
     val currPlayer get() = _currPlayer
 
-    var isPlaying = mutableStateOf(player.isPlaying)
+    var isPlaying = mutableStateOf(false)
         private set
 
     fun onTextChange(text: String) {
@@ -45,6 +44,7 @@ class ApiViewModel @Inject constructor(
 
     fun searchData(query: String) {
         _isLoading.value = true
+        _searchText.value = query
         savedStateHandle["search"] = query
 
         apiService.getAudio(query).enqueue(object : Callback<ApiData> {
@@ -77,7 +77,7 @@ class ApiViewModel @Inject constructor(
             }
         }
 
-        player.play()
+//        player.play()
         isPlaying.value = true
     }
 
@@ -93,6 +93,7 @@ class ApiViewModel @Inject constructor(
 
     fun pauseAudio() {
         player.pause()
+        isPlaying.value = false
     }
 
     override fun onCleared() {

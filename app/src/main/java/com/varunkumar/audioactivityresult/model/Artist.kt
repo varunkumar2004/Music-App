@@ -10,5 +10,5 @@ data class Artist(
     val picture_small: String,
     val picture_xl: String,
     val tracklist: String,
-    val type: String
+    val type: String,
 )

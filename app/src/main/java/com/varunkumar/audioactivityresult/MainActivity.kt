@@ -9,17 +9,16 @@ import androidx.annotation.RequiresApi
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavArgument
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.varunkumar.audioactivityresult.presentation.ApiViewModel
+import com.varunkumar.audioactivityresult.presentation.SearchViewModel
 import com.varunkumar.audioactivityresult.presentation.LocalViewModel
-import com.varunkumar.audioactivityresult.utils.NavigationBarItems
 import com.varunkumar.audioactivityresult.presentation.views.HomeScreen
 import com.varunkumar.audioactivityresult.presentation.views.LocalScreen
 import com.varunkumar.audioactivityresult.presentation.views.SplashScreen
 import com.varunkumar.audioactivityresult.ui.theme.AudioActivityResultTheme
+import com.varunkumar.audioactivityresult.utils.NavigationBarItems
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,7 +38,7 @@ class MainActivity : ComponentActivity() {
             AudioActivityResultTheme {
                 val navController = rememberNavController()
                 val localViewModel = hiltViewModel<LocalViewModel>()
-                val apiViewModel = hiltViewModel<ApiViewModel>()
+                val searchViewModel = hiltViewModel<SearchViewModel>()
 
                 val modifier = Modifier
                 NavHost(
@@ -50,7 +49,7 @@ class MainActivity : ComponentActivity() {
                         SplashScreen(navController = navController)
                     }
                     composable(NavigationBarItems.Home.route) {
-                        HomeScreen(modifier = modifier, viewModel = apiViewModel, navController = navController)
+                        HomeScreen(modifier = modifier, viewModel = searchViewModel, navController = navController)
                     }
                     composable(NavigationBarItems.Local.route) {
                         LocalScreen(modifier = modifier, viewModel = localViewModel)

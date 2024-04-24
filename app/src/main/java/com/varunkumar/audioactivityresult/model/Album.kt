@@ -12,3 +12,4 @@ data class Album(
     val tracklist: String,
     val type: String
 )
+

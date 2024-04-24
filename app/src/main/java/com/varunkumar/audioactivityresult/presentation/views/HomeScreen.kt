@@ -17,15 +17,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Forward10
+import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Replay10
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -47,12 +50,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.varunkumar.audioactivityresult.model.AudioItem
-import com.varunkumar.audioactivityresult.presentation.ApiViewModel
+import com.varunkumar.audioactivityresult.presentation.SearchViewModel
 import com.varunkumar.audioactivityresult.utils.NavigationBarItems
 import com.varunkumar.audioactivityresult.utils.Result
 import com.varunkumar.audioactivityresult.utils.extractTime
@@ -61,16 +65,15 @@ import com.varunkumar.audioactivityresult.utils.extractTime
 @Composable
 fun HomeScreen(
     modifier: Modifier,
-    viewModel: ApiViewModel,
+    viewModel: SearchViewModel,
     navController: NavController
 ) {
     navController.clearBackStack(NavigationBarItems.Splash.route)
-
     val context = LocalContext.current
+
     val isLoading by viewModel.isLoading.collectAsState()
     val result by viewModel.apiResult
     val currPlayer by viewModel.currPlayer
-
     val isPlaying by viewModel.isPlaying
 
     var showAlert by remember {
@@ -180,11 +183,98 @@ fun HomeScreen(
     if (showAlert) {
         AlertDialog(onDismissRequest = { showAlert = false }) {
             currPlayer?.let { item ->
-                InfoScreen(
+                InfoAlert(
                     modifier = Modifier.fillMaxWidth(),
                     item = item
-                )
+                ) { request ->
+                    showAlert = false
+                    viewModel.searchData(request)
+                }
             }
+        }
+    }
+}
+
+@Composable
+fun InfoAlert(
+    modifier: Modifier,
+    item: AudioItem,
+    onItemClick: (String) -> Unit
+) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(10.dp))
+            .background(Color.Black)
+            .padding(10.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.MusicNote,
+                contentDescription = null,
+                tint = Color.White
+            )
+
+            Spacer(modifier = Modifier.width(10.dp))
+
+            Text(
+                text = item.name,
+                color = Color.White
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+                .clickable { onItemClick(item.artist!!.name) },
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AsyncImage(
+                model = item.artist!!.picture_medium,
+                contentDescription = null,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(Color.DarkGray)
+                    .size(80.dp)
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Text(
+                text = "${item.artist.name} (${item.artist.type})",
+                color = Color.White,
+                textAlign = TextAlign.End
+            )
+        }
+
+        Divider(color = Color.DarkGray)
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+                .clickable { onItemClick(item.album!!.title) },
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AsyncImage(
+                model = item.album!!.cover_big,
+                contentDescription = null,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Color.DarkGray)
+                    .size(80.dp)
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Text(
+                text = "${item.album.title} (${item.album.type})",
+                color = Color.White,
+                textAlign = TextAlign.End
+            )
         }
     }
 }
