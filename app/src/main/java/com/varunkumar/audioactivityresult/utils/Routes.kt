@@ -25,10 +25,4 @@ sealed class NavigationBarItems(
         label = "Local",
         icon = Icons.Default.FilePresent
     )
-
-    data object Info : NavigationBarItems(
-        route = "info_screen",
-        label = "Info",
-        icon = Icons.Default.Info
-    )
 }

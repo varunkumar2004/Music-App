@@ -318,15 +318,17 @@ fun Item(
                 modifier = Modifier.weight(0.7f),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                AsyncImage(
-                    model = item.cover,
-                    contentDescription = "cover",
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(RoundedCornerShape(5.dp))
-                )
+                item.cover?.let {cover ->
+                    AsyncImage(
+                        model = cover,
+                        contentDescription = "cover",
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(RoundedCornerShape(5.dp))
+                    )
 
-                Spacer(modifier = Modifier.width(10.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
+                }
 
                 Column {
                     Text(
